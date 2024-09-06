@@ -1,0 +1,111 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a id="web-title" class="navbar-brand" href="#"
+        style="font-family: 'Quicksand'; 
+        font-size: 40px;">
+            <i>Web</i><b>GIS</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Title1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Title2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Title3</a>
+                </li>
+            </ul>
+            <div class="dropdown d-flex align-self-center">
+                <button class="btn btn-outline-link dropdown-toggle menu-text-color" type="button" id="dropdownMenuButtonl" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ CURRENT_LANGUAGE }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for language in languages %}
+                    <li><a class="dropdown-item" href="/{{ language.code }}/{{ request.get_full_path|slice:'4:' }}" style="text-transform: uppercase;">{{ language.code }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="themeDropdown">
+                    <li><a class="dropdown-item" onclick="changeTheme('light')">{% trans 'Argia' %} <i class="fa-solid fa-sun"></i></a></li>
+                    <li><a class="dropdown-item" onclick="changeTheme('dark')">{% trans 'Iluna' %} <i class="fa-solid fa-moon"></i></a></li>
+                </ul>
+            </div>
+
+            {% comment %}
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            {% endcomment %}
+        </div>
+    </div>
+</nav>
+<div class="col-3 mx-2 d-block d-md-none d-flex">            
+    <div class="bottom-nav">
+        <a href="#" class="bottom-nav-item btn btn">
+            <i class="fas fa-home"></i>
+            <span>{% trans 'Hasiera' %}</span>
+        </a>            
+        <a href="#" class="bottom-nav-item btn" data-bs-toggle="modal" data-bs-target="#filterMobileModal">
+            <i class="fas fa-search"></i>
+            <span>{% trans 'Bilatu' %}</span>
+        </a>            
+        <a id="btn-map" href="#" class="bottom-nav-item btn" onclick="toggleView('map')">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>{% trans 'Mapa' %}</span>
+        </a>
+        {% if request.user.username != '' %}                    
+        <a href="#" class="bottom-nav-item btn">
+            <img src="{% if profile.image %}{{profile.image.url}}{% else %}/media/profile/user_default.png{% endif %}" width="30px" alt="">
+            <span>{{request.user.username}}</span>
+        </a>
+        {% else %}
+        <a href="/es/accounts/login/" class="bottom-nav-item btn">
+            <i class="fas fa-user"></i>
+            <span>{% trans 'Profila' %}</span>
+        </a>
+        {% endif %}
+    
+    </div>
+</div>  
+<script>
+    function changeTheme(theme) {
+        const html = document.documentElement;
+        html.setAttribute('data-bs-theme', theme);
+        const themeButton = document.getElementById('themeDropdown');
+        if (theme === 'light') {
+            themeButton.classList.remove('btn-outline-light');
+            themeButton.classList.add('btn-outline-dark');
+        } else {
+            themeButton.classList.remove('btn-outline-dark');
+            themeButton.classList.add('btn-outline-light');
+        }
+    }
+</script>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}WebGIS{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-center m-3">
+        <div id="map" class="col-12 p-3">
+        </div>
+    </div>
+    <div class="row m-3">
+        <div class="col-6 m-3"></div>
+        <div class="col-6 m-3"></div>
+    </div>
+</div>
+<script>
+    var latitude = 42.92252644175441;
+    var longitude = -2.0908440517638573;
+    var zoom_map = 8;
+    let map = L.map('map', {
+				tap: false, // ref https://github.com/Leaflet/Leaflet/issues/7255
+				center: new L.LatLng(latitude, longitude),
+				zoom: zoom_map,
+			});
+
+
+    var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {maxZoom: 20}).addTo(map);
+
+    var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom: 20});
+</script>
+{% endblock %}
